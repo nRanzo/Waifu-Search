@@ -106,8 +106,8 @@
 
         <div class="chat" id="chat"></div>
         <div class="input-container">
-            <input type="text" id="input" class="input-field" placeholder="-scrivi qui-">
-            <button onclick="send()" class="send-button">Invio</button>
+            <input type="text" id="input" class="input-field" placeholder="-write here-">
+            <button onclick="send()" class="send-button">Send</button>
         </div>
     </div>
 
@@ -119,6 +119,7 @@
             xhr.open("GET", "http://localhost:5000/chat?input=" + input);
             xhr.onload = function() {
                 var response = JSON.parse(xhr.responseText);
+                console.log("Server response:", response);  // Added for debug purposes
                 var chat = document.getElementById("chat");
 
                 var userMessageContainer = document.createElement("div");
@@ -139,12 +140,22 @@
 
                 var botMessage = document.createElement("div");
                 botMessage.classList.add("bot-message");
+                
                 var botName = document.createElement("div");
                 botName.classList.add("message-name");
                 botName.innerText = "Waifu API";
                 botMessage.appendChild(botName);
+                
                 var botContent = document.createElement("div");
-                botContent.innerText = JSON.stringify(response.message, null, 2);
+                if (response.message.startsWith('http')) {
+                    var img = document.createElement("img");
+                    img.src = response.message;
+                    img.alt = "Waifu Image";
+                    img.style.maxWidth = "100%";
+                    botContent.appendChild(img);
+                } else {
+                    botContent.innerText = response.message;
+                }
                 botMessage.appendChild(botContent);
 
                 userMessageContainer.appendChild(userMessage);
