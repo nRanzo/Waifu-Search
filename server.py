@@ -19,6 +19,7 @@ def chat():
     response = requests.get(apiUrl, params=params)
     if response.ok:
         data = response.json()
+        print("Response JSON:", data)  # Added for deebug purposes
         if 'images' in data and data['images']:
             image_url = data['images'][0]['url']
             return jsonify({"message": image_url})
