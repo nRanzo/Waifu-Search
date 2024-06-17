@@ -166,6 +166,9 @@
 
                 chat.scrollTop = chat.scrollHeight;
             };
+            xhr.onerror = function() {
+                console.error("Request failed: " + xhr.statusText);
+            };
             xhr.send();
         }
     </script>
