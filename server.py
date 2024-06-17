@@ -19,13 +19,15 @@ def chat():
     response = requests.get(apiUrl, params=params)
     if response.ok:
         data = response.json()
-        print("Response JSON:", data)  # Added for deebug purposes
+        print("Response JSON:", data)  # Added for debug purposes
         if 'images' in data and data['images']:
             image_url = data['images'][0]['url']
+            print("Image URL:", image_url)  # Added for debug purposes
             return jsonify({"message": image_url})
         else:
             return jsonify({"message": "No images found."})
     else:
+        print("Request failed with status code:", response.status_code)  # Added for debug purposes
         return jsonify({"message": "Request failed with status code: " + str(response.status)})
 
 if __name__ == '__main__':
