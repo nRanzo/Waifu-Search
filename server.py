@@ -15,21 +15,15 @@ def chat():
         'included_tags': [user_input],
         'height': '>=2000'
     }
-    queryParams = {}
-    for key, value in params.items():
-        if isinstance(value, list):
-            for v in value:
-                if key in queryParams:
-                    queryParams[key].append(v)
-                else:
-                    queryParams[key] = [v]
-        else:
-            queryParams[key] = value
-
-    response = requests.get(apiUrl, params=queryParams)
+    
+    response = requests.get(apiUrl, params=params)
     if response.ok:
         data = response.json()
-        return jsonify({"message": data})
+        if 'images' in data and data['images']:
+            image_url = data['images'][0]['url']
+            return jsonify({"message": image_url})
+        else:
+            return jsonify({"message": "No images found."})
     else:
         return jsonify({"message": "Request failed with status code: " + str(response.status)})
 
